@@ -1,0 +1,468 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %% 
+%% LaTeX to get the ``??'' replaced with the number of the last page  %% 
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section 
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Liz Murphy}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table 
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+%\href{http://www.ece.osu.edu/}%
+%     {Department of Electrical and Computer Engineering} & \\
+ 
+90 S 13th Street \#2                          & \textit{Mobile:} +1 (202) 817-5028 \\
+San Jose\\
+CA 95112\\
+{E-mail: }\href{mailto:liz.murphy80@gmail.com} {liz.murphy80@gmail.com} \\
+www: \href{http://www.lizmurphy.org/}{www.lizmurphy.org} 
+\end{tabular}
+
+%\section{Security Clearance} 
+%
+%Department of Defense Top Secret SCI with polygraph (expired: 2002) 
+
+\section{Citizenship}
+%
+Australian (E3 Visa Status)
+
+\section{Skills}
+%
+Robotics Engineer specializing in algorithms and software development for autonomous navigation for ground vehicles. C++, Python, ROS 
+
+\section{Professional Experience}
+{\textbf{Apple}}, Sunnyvale CA
+\begin{outerlist}
+\item[] \textit{Software Engineer, Special Projects Group} \hfill \textbf{July 2016 - Present}
+\\
+\end{outerlist}
+
+\href{http://www.savioke.com}{\textbf{Savioke}}, Santa Clara CA
+\begin{outerlist}
+\item[] \textit{Senior Robot Engineer} \hfill \textbf{June 2014 - June 2016}
+\begin{innerlist}
+\item Designing, implementing and testing algorithms for localization, mapping and path planning for mobile robots in
+the service industry. Our fleet of robots run 24/7 around people, they take the elevator, and have completed over 13000
+deliveries to date. 
+\item Personally responsible for a number of systems, including the SLAM system being used for mapping, the dock detection system, floor (elevator)
+detection using barometric data, and door opening detection for delivery validation
+\item Worked collaboratively on the path planning (local and global), localization and logging and introspection
+systems
+\item Part of a navigation software team of 3, distributed across 3 continents. 
+\item Software developement in C++ and Python using the ROS framework on Linux. 
+\item Experience with a range of sensors including LiDAR, 3D Depth cameras, IMU, Barometer and Wheel Odometry
+\item Agile software development
+\item Testing and deployment of the software to the fleet of 40+ robots.
+\end{innerlist}
+\end{outerlist}
+\blankline
+
+\href{http://www.gwu.edu}{\textbf{George Washington University}}, 
+Washington, DC
+\begin{outerlist}
+\item[] \textit{Postdoctoral Scientist} \hfill \textbf{June 2013 - June 2014}
+\begin{innerlist}
+\item{Worked in the Robotics and Perception Group}
+\item{Built a system to perform visual place recognition using a vocabulary of visual words learned on-line}
+\item{Leveraged this framework to detect distinct topological places to aid long term place recognition}
+\item{Integrated the system into the group's visual SLAM framework (relative SLAM)}
+\end{innerlist}
+\end{outerlist}
+\begin{outerlist}
+\item[] \textit{Adjunct Lecturer} \hfill \textbf{Spring 2014}
+\begin{innerlist}
+\item{CSCI4527/6547 Introduction to Computer Vision}
+\end{innerlist}
+\end{outerlist}
+\blankline
+
+\href{http://www.qut.edu.au}{\textbf{Queensland University of Technology}}, 
+Brisbane, Australia
+\begin{outerlist}
+\item[] \textit{Postdoctoral Research Fellow} \hfill \textbf{January 2011 - May 2013}
+\begin{innerlist}
+\item{Worked in the CyberPhysical Systems Group}
+\item{Under the persistent vision-only navigation project, investigated and implemented multi-hypothesis SLAM
+techniques for robust navigation, made compact models of the
+enviroment for long term localization and implemented a topometric approach to navigation using only stereo vision}
+\item{Traversability estimation, probabilistic costmap creation and planning using the A* and D* family of heuristic
+search implemented on a remote controlled car}
+\item{Converted an Adept GuiaBot for use under the ROS platform, including adding additional computers and sensors to
+the platform} 
+\end{innerlist}
+\end{outerlist}
+
+\blankline
+
+\href{http://www.ox.ac.uk}{\textbf{University of Oxford}}, 
+Oxford, UK
+%
+\begin{outerlist}
+
+\item[] \textit{Non-stipendiary Lecturer, New College}% 
+        \hfill \textbf{Michaelmas 2009}
+	\begin{innerlist}
+	\item Undergraduate tutorial teaching for Electronics and Communications Systems.
+    \end{innerlist}
+
+\item[] \textit{Laboratory demonstrator}% 
+        \hfill \textbf{January 2007 to October 2010}
+\end{outerlist}
+
+\blankline
+
+%
+\href{http://www.energy.qld.gov.au/}{\textbf{Queensland Department of Energy}}, 
+Brisbane, QLD, Australia
+
+\begin{outerlist}
+\item[] \textit{Senior Performance Officer}%
+        \hfill \textbf{October 2005 - August 2006}
+\begin{innerlist}
+\item Operational performance monitoring of energy industry participants in Queensland
+\end{innerlist}
+\end{outerlist}
+
+\blankline
+
+\href{http://www.dsto.defence.gov.au/}{\textbf{Defence Science Technology Organisation}}, 
+Adelaide, Australia
+\begin{outerlist}
+\item[] \textit{Research Engineer}%
+        \hfill \textbf{January 2003 - October 2005}
+\begin{innerlist}
+\item Worked on the electronic and software system designs for a new portable secure communications device used in Defence
+\item Devised solutions for the repair/upgrade of legacy electronic systems for airborne mission systems
+\end{innerlist}
+\end{outerlist}
+
+\section{Education}
+%
+\href{http://www.ox.ac.uk/}{\textbf{University of Oxford}}, 
+Oxford, UK
+\begin{outerlist}
+
+\item[] DPhil, 
+        \href{http://www.eng.ox.ac.uk/}
+             {Engineering Science} 
+        (Completed: December 2010)
+        \begin{innerlist}
+        \item Thesis Topic: Planning and Exploring Under Uncertainty
+        \item Supervisor: 
+              \href{http://www.robots.ox.ac.uk/~mobile/wikisite/pmwiki/pmwiki.php?n=People.PMN}
+                   {Dr Paul Newman}
+        \item Area of Study: Mobile Robotics       
+        \end{innerlist}
+\end{outerlist}
+
+\blankline        
+
+\href{http://www.eng.jcu.edu.au/}{\textbf{James Cook University}}, 
+Townsville, Queensland, Australia
+\begin{outerlist}
+
+\item[] BE(Hons)-BSc, 
+        \href{http://www.eng.jcu.edu.au/}
+             {Computer Systems Engineering and Computer Science}, December 2002
+        \begin{innerlist}
+        \item Class I Honours in Engineering        
+        \item{University Medallist}
+        \item{Graduated with a GPA of 6.975 on a 7.0 scale}
+        \end{innerlist}
+
+\end{outerlist}
+
+\section{Awards} 
+%
+\href{http://www.rhodeshouse.ox.ac.uk/}{\textbf{The Rhodes Trust}}
+\begin{innerlist}
+\item Rhodes Scholarship for Australia-at-Large, October 2006 - September 2009
+\end{innerlist}
+
+\blankline
+
+\href{http://www.jcu.edu.au}{\textbf{James Cook University}}
+\begin{innerlist}
+\item University Medal, 2003
+\end{innerlist}
+
+\blankline
+
+\href{http://www.deewr.gov.au/Schooling/AustralianStudentPrize/Pages/default.aspx}{Australian Government}
+\begin{innerlist}
+\item Australian Student Prize, 1997
+\begin{innerlist}
+\item awarded to the top 500 Year 12 students in Australia
+\end{innerlist}
+\end{innerlist}
+
+\pagebreak
+
+\section{Journal Publications}
+Liz Murphy and Paul Newman, \textit{Risky Planning on Probabilistic Costmaps for Path Planning in Outdoor Environments}. IEEE Transactions on Robotics.  Robotics, IEEE Transactions on, Volume 29, Issue 2. 2013\\
+
+Paul Newman, Gabe Sibley, Mike Smith, Mark Cummins, Alastair Harrison, Chris Mei, Ingmar Posner, Robbie Shade, Derik Schrter, Liz Murphy, Winston Churchill, Dave Cole and Ian Reid \textit{Navigating, Recognising and Describing Urban Spaces With Vision and Laser}. The International Journal of Robotics Research, Volume 28, Issue 11-12. 2009
+
+\section{Conference Publications and Presentations}
+Liz Murphy and Gabe Sibley, \textit{Incremental Unsupervised Topological Place Discovery}, In Proceedings of the International Conference on Robotics and Automation (ICRA), Hong Kong, 2014 (To Appear) 
+
+\blankline
+
+Gabe Sibley, Nima Keivan, Alonso Patron-Perez, Vincent Spinello-Mamo, Steven Lovegrove and Liz Murphy, \textit{Scalable Perception and Planning Based Control}, In Proceedings of the International Symposium of Robotic Research (ISRR), Singapore, 2013 
+
+\blankline
+
+Liz Murphy and Peter Corke, \textit{STALKERBOT: Learning to Navigate Dynamic Human Environments by Following People}.  In Proceedings of the Australasian Conference on Robotics and Automation, Wellington, New Zealand, 2012  
+
+\blankline
+
+Liz Murphy, Steven Martin and Peter Corke, \textit{Creating and Using Probabilistic Costmaps from Vehicle Experience}. In Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, Vilamoura, Portugal, 2012
+
+\blankline
+
+Liz Murphy, Timothy Morris, Ugo Fabrizi, Michael Warren, Michael Milford, Ben Upcroft, Michael Bosse and Peter Corke, \textit{Experimental Comparison of Odometry Approaches}. In Proceedings of the International Symposium of Experimental Robotics (ISER), Quebec City, Canada, 2012
+
+\blankline
+
+Steven Martin, Liz Murphy and Peter Corke, \textit{Building Large Scale Traversability Maps Using Vehicle Experience}. In Proceedings of the International Symposium of Experimental Robotics (ISER), Quebec City, Canada.
+
+\blankline
+
+Liz Murphy, Peter Corke and Paul Newman, \textit{Choosing Landmarks for Risky Planning}. In Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), San Francisco CA, 2011
+
+\blankline
+
+Liz Murphy and Paul Newman, \textit{Risky Planning: Path Planning over Costmaps with a Probabilistically Bounded Speed-Accuracy Tradeoff}. In Proceedings of the IEEE International Conference on Robotics and Automation (ICRA'11). Shanghai, China. 2011
+
+\blankline
+
+Liz Murphy and Paul Newman, \textit{Planning Most-Likely Paths from Overhead Imagery}, In Proceedings of the International Conference on Robotics and Automation (ICRA). Anchorage, AK. 2010
+
+\blankline
+
+Liz Murphy and Paul Newman, \textit{Using Incomplete Online Metric Maps for Topological Exploration with the Gap Navigation Tree}, In Proceedings of the International Conference of Robotics and Automation (ICRA), Pasadena, 2008
+
+\section{Workshops}
+Liz Murphy and Peter Corke. \textit{RGBD Enabled Human Centric Navigation}. In proceedings of the RGB-D: Advanced Reasoning with Depth Cameras Workshop, at the Robotics Science and Systems Conference, Sydney, July 2012
+
+\blankline
+
+Liz Murphy and Paul Newman, \textit{Robust Topological Exploration with the Gap Navigation Tree}, Presentation at the RSS Workshop on Topology and Minimalism in Robotics, Zurich 2008
+
+\section{DPhil Thesis}
+Liz Murphy, \textit{Planning and Exploring Under Uncertainty}, DPhil Thesis, University of Oxford, December 2010
+
+\section{Internal Reports}
+%
+Liz Murphy, \textit{Autonomous Exploration in Unknown Environments}, DPhil Transfer Report, University of Oxford, Michaelmas Term 2007
+
+\section{Professional Affiliations} 
+Member of the Institution of Electrical and Electronic Engineers (IEEE)\\
+
+%\section{Leadership}
+%%
+%$\bullet$ Oxford University Womens Boat Club Committee Member 2009-2010 \\
+%$\bullet$ Somerville College Middle Common Room (MCR) Social Secretary 2007-08 \\
+%$\bullet$ President of the South Australian Flying Disc (Ultimate Frisbee) Association (2004) \\
+%$\bullet$ United Collegians Athletic Club Committee Member 2004 \\
+%$\bullet$ Athletics North Queensland Athlete's Commission Chair 2002 \\
+%
+%\section{Sporting Achievements}
+%%
+%$\bullet$ Oxford Full Blue in Rowing and Athletics \\
+%\hspace*{15pt} $\bullet$ Rowed for the winning Oxford University Women's Boat Club \textit{Blue Boat} against Cambridge in 2009 \& 2010\\
+%\hspace*{15pt} $\bullet$ Member of the Varsity Winning Women's Blues Athletics Team 2007 \& 2008 \\
+%$\bullet$ British University Sports Association (BUSA) Heptathlon Champion, 2007 \\
+%$\bullet$ Placed 6th in the Open division Heptathlon at the Australian Championships, 2000, 2001, 2004 \\
+%$\bullet$ Australian representative at the Oceania Athletics Championships in Townsville (1996) and Christchurch (2002)\\
+%\hspace*{15pt} $\bullet$ 2002 Oceania Area Champion in the Long Jump \\
+%$\bullet$ Three time (1999,2000,2002) member of the honorary Green and Gold Team named at the Australian University Championships \\
+%\hspace*{15pt}$\bullet$ Australian University Heptathlon Champion (1999,2002); High Jump Champion (2000,2001) \\
+%$\bullet$  Most Valuable Player in the Women's division at the 2004 Australian Ultimate Frisbee Championships in Brisbane \\
+
+%\section{Voluntary Work}
+%$\bullet$ Coach of Somerville College Womens 2nd VII Rowing Squad, 2008/09 \\
+%$\bullet$  Australian Red Cross Save-A-Mate First Aid Unit, 2005 \\
+%$\bullet$  Volunteer Official for Ross River Athletics Club and United Collegians Athletic Clubs (1998 - 2005) \\
+%$\bullet$  Tree Planting and Rubbish removal for Conservation Volunteers Australia and other community groups (2004-2006) \\
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
